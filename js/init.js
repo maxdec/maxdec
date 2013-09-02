@@ -15,7 +15,8 @@ var resources = new Resources();
 
 resources.load([
   'img/maxdec.png',
-  'img/copter.png'
+  'img/copter.png',
+  'img/bullet.png'
 ]);
 
 resources.onReady(function () {

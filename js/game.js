@@ -80,7 +80,21 @@ Game.prototype.reset = function () {
 
 Game.prototype.updateEntities = function (dt) {
   this.player.sprite.update(dt);
-  // TODO: update bullets
+
+  // Update all the bullets
+  for (var i = 0; i < this.bullets.length; i++) {
+    var bullet = this.bullets[i];
+
+    bullet.pos[1] -= this.speeds.bullet * dt;
+
+    // Remove the bullet if it goes offscreen
+    if (bullet.pos[1] < 0 || bullet.pos[1] > engine.canvas.height ||
+      bullet.pos[0] > engine.canvas.width) {
+      this.bullets.splice(i, 1);
+      i--;
+    }
+  }
+
   // TODO: update enemies
   // TODO: update explosions
 };
@@ -88,15 +102,13 @@ Game.prototype.updateEntities = function (dt) {
 Game.prototype.handleInput = function (dt) {
   if (this.keys['right']) this.player.pos[0] += this.speeds.player * dt;
   if (this.keys['left']) this.player.pos[0] -= this.speeds.player * dt;
-  if (this.keys['space'] && Date.now() - this.lastFire > 80) {
-    var x = this.player.pos[0] + this.player.sprite.size[0] / 2;
-    var y = this.player.pos[1] + this.player.sprite.size[1] / 2;
+  if (this.keys['space'] && Date.now() - this.lastFire > 200) {
+    var x = this.player.pos[0] + (this.player.sprite.size[0] - Bullet.prototype.sprite.size[0]) / 2;
+    var y = this.player.pos[1];// + (this.player.sprite.size[1]- Bullet.prototype.sprite.size[1]) / 2;
     this.lastFire = Date.now();
-    // bullets.push({
-    //   pos: [x, y],
-    //   dir: 'forward'
-    //   sprite: new Sprite()
-    // })
+
+    var bullet = new Bullet([x, y]);
+    this.bullets.push(bullet);
   }
 
   if (this.keys[27]) this.this.player.pos[1] += this.speeds.this.player * dt;

@@ -41,10 +41,8 @@ function Player(pos) {
 /**
  * Bullets
  */
-function Bullet(player) {
-  this.width = 4;
-  this.height = 10;
-  this.x = player.x + (player.width / 2);
-  this.y = player.y - this.height;
-  this.color = '#f33';
+function Bullet(pos, dir) {
+  this.pos = pos;
+  this.dir = dir || 'up';
 }
+Bullet.prototype.sprite = new Sprite('img/bullet.png', [0, 0], [8, 18]);
